@@ -1,0 +1,64 @@
+\documentclass[slide, papersize]{jsarticle}
+
+\usepackage{qslide}
+
+\begin{document}
+\qslide{Title}{
+1\qnewline
+\qdelay{2}\qnewline
+\qdelay{3}
+}
+
+\qconsecslide{1}{5}{Title\theqcount}{
+\theqcount
+}
+
+\qslide{Title}{
+\qdelay{\setdeffontsize[15]}
+\begin{qitemize}
+  \item item1
+  \begin{qitemize}
+    \item item2
+    \item item3
+  \end{qitemize}
+  \item item4
+  \begin{qenumerate}
+    \item item5
+    \begin{qitemize}
+      \item item6
+      \begin{qitemize}
+        \item item 7
+      \end{qitemize}
+    \end{qitemize}
+  \end{qenumerate}
+\end{qitemize}
+}
+
+\qslide{Title}{
+\begin{qitemize}
+  \item item1
+  \qdelay{
+    \begin{qitemize}
+      \item item2
+      \item item3
+    \end{qitemize}
+    \item item4
+    \begin{qenumerate}
+      \item item5
+      \qdelay{
+        \begin{qitemize}
+          \item item6
+          \begin{qitemize}
+            \item item 7
+          \end{qitemize}
+        \end{qitemize}
+      }
+    \end{qenumerate}
+  }
+\end{qitemize}
+\qdelay{
+content
+}
+}
+
+\end{document}

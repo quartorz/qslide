@@ -1,0 +1,135 @@
+﻿% 2014/01/25-31, 2014/04/15
+% quarter
+
+\usepackage{hangcaption}
+\usepackage{ifthen}
+\usepackage{color}
+\usepackage{pxfonts}
+
+\newcommand{\makepage}[2][9]{
+  \section*{\centering \large \bfseries #2}
+  \setdeffontsize[#1]
+}
+
+
+\newcounter{qdelayc}
+\newcounter{qdelayoc}
+\newcounter{qdelayfc}
+
+\newcommand\qdelay[1]{%
+  \ifnum\value{qdelayc}<\value{qdelayfc}
+    \stepcounter{qdelayc}
+    \stepcounter{qdelayoc}
+    #1
+  \else
+    \stepcounter{qdelayc}
+  \fi
+}
+
+\newcommand\qslide[3][9]{
+  \setcounter{qdelayfc}{0}
+  \loop
+    \makepage[#1]{#2}
+    \setcounter{qdelayc}{0}
+    \setcounter{qdelayoc}{0}
+    #3
+    \stepcounter{qdelayfc}
+    \ifnum\value{qdelayoc}>0\addtocounter{page}{-1}\fi
+    \ifnum\value{qdelayoc}<\value{qdelayc}\repeat
+}
+
+\newcommand{\qconsecslide}[5][9]{%
+  \for{#2}{#3}{%
+    \makepage[#1]{#4}
+    #5
+    \ifnum\value{qcount}>#2\addtocounter{page}{-1}\fi
+  }%
+}
+
+\newcommand{\qnewline}{\leavevmode\\}
+
+
+\makeatletter
+\newcommand{\figcaption}[2][\footnotesize]{\def\@captype{figure}\caption{#1{#2}}}
+\newcommand{\tblcaption}[1]{\def\@captype{table}\caption{#1}}
+\makeatother
+
+
+\setlength\abovecaptionskip{0pt}
+\captionwidth=0.9\textwidth %本文サイズの90％
+\newcommand{\captionfonts}{\footnotesize}
+
+\makeatletter
+\long\def\@makecaption#1#2{%
+\vskip\abovecaptionskip
+\sbox\@tempboxa{{\captionfonts #1 #2}}%
+\ifdim \wd\@tempboxa >\hsize
+  {\captionfonts #1 #2\par}
+\else
+  \hbox to\hsize{\hfil\box\@tempboxa\hfil}%
+\fi
+\vskip\belowcaptionskip}
+\makeatother
+
+
+\newcounter{fontsize}
+\newcounter{deffontsize}
+\newcounter{indentlevel}
+\newcounter{linespacing}
+\newcommand{\setdeffontsize}[1][10]{
+  \setcounter{deffontsize}{#1}
+  \setcounter{fontsize}{#1}
+}
+\newcommand{\setindent}[1]{
+  \setcounter{fontsize}{\value{deffontsize}}
+  \addtocounter{fontsize}{-#1}
+  \fontsize{\value{fontsize}pt}{\value{linespacing}pt}\selectfont
+}
+\newcommand{\setlinespacing}[1]{
+  \setcounter{linespacing}{#1}
+  \fontsize{\value{fontsize}pt}{#1pt}\selectfont
+}
+
+\setcounter{indentlevel}{0}
+\newenvironment{qitemize}{
+  \begin{itemize}
+  \setindent{\value{indentlevel}}
+  \addtocounter{indentlevel}{1}
+}{
+  \end{itemize}
+  \addtocounter{indentlevel}{-1}
+  \setindent{\value{indentlevel}}
+}
+\newenvironment{qenumerate}{
+  \begin{enumerate}
+  \setindent{\value{indentlevel}}
+  \addtocounter{indentlevel}{1}
+}{
+  \end{enumerate}
+  \addtocounter{indentlevel}{-1}
+  \setindent{\value{indentlevel}}
+}
+
+\pagestyle{plain}
+\addtolength{\footskip}{3.5mm}
+
+\renewcommand{\labelitemiii}{\raisebox{-0.15em}{\large $\cdot$}}
+
+\setcounter{linespacing}{9}
+
+
+\newcounter{qcount}
+\newcounter{qstopcount}
+\makeatletter
+\newcommand{\for}[3]{%
+  \setcounter{qcount}{#1}%
+  \setcounter{qstopcount}{#2}%
+  \stepcounter{qstopcount}%
+  \@whilenum\value{qcount}<\value{qstopcount}\do{%
+    {#3}%
+  \stepcounter{qcount}}%
+}
+\makeatother
+
+
+\def\maybeblue{\color{black}}
